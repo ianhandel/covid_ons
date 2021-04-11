@@ -1,16 +1,9 @@
----
-title: "ONS 2021"
-author: "IH"
-date: "11/04/2021"
-output: github_document
----
+ONS 2021
+================
+IH
+11/04/2021
 
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-```
-
-```{r}
+``` r
 library(tidyverse)
 library(tidyxl)
 library(unpivotr)
@@ -18,8 +11,7 @@ library(lubridate)
 library(janitor)
 ```
 
-
-```{r}
+``` r
 ons <- xlsx_cells("covid19infectionsurveydatasets20210409.xlsx",
                   sheet = "5e ") %>% 
   
@@ -52,8 +44,7 @@ ons <- xlsx_cells("covid19infectionsurveydatasets20210409.xlsx",
   clean_names()
 ```
 
-
-```{r, fig.width=10, fig.height=8}
+``` r
 ons %>% 
   ggplot() +
   aes(x = date,
@@ -68,4 +59,4 @@ ons %>%
        colour = "Age")
 ```
 
-
+![](covid_ons_2021_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
