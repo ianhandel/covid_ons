@@ -1,0 +1,47 @@
+---
+title: "ONS 2021"
+author: "IH"
+date: "11/04/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(tidyxl)
+library(unpivotr)
+library(lubridate)
+```
+
+```{r}
+ons <- xlsx_cells("covid19infectionsurveydatasets20210409.xlsx",
+                  sheet = "5e ") %>% 
+  
+  # need to automate this next filter...
+  
+  filter(row >= 5 & row <= 49) %>% 
+  
+  # strip off headers one by one
+  
+  behead(direction = "N", name = "age") %>%
+  behead(direction = "N", name = "blah") %>%
+  behead(direction = "N", name = "ci") %>%
+  behead(direction = "W", "date") %>% 
+  
+  # just the stuff we want
+  
+  select(date = date.header, age, ci, value = numeric) %>% 
+  
+  fill(age) %>%
+  
+  # some coding
+  
+  mutate(ci = fct_explicit_na(ci, "estimate")) %>%
+  mutate(age = parse_number(age)) %>% 
+  mutate(date = ymd(date)) %>% 
+  
+  # format for plotting...
+  
+  pivot_wider(names_from = ci, values_from = value)
+```
+
+
